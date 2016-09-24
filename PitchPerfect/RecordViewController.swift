@@ -9,12 +9,14 @@
 import UIKit
 import AVFoundation
 
-class ViewController: UIViewController,AVAudioRecorderDelegate
+class RecordViewController: UIViewController,AVAudioRecorderDelegate
 {
     
     @IBOutlet weak var lblRecord:UILabel!
     @IBOutlet weak var btnStop:UIButton!
     @IBOutlet weak var btnRecord:UIButton!
+    
+    var audioRecorder:AVAudioRecorder!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,9 +31,6 @@ class ViewController: UIViewController,AVAudioRecorderDelegate
     
     func recordAudio()
     {
-        
-        var audioRecorder:AVAudioRecorder!
-        
         let path=NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
         let recordingName="recording.wav"
         let pathArray=[path,recordingName]
@@ -56,17 +55,26 @@ class ViewController: UIViewController,AVAudioRecorderDelegate
         if(success)
         {
             
+            self.performSegue(withIdentifier: "PushOptions", sender: audioRecorder.url)
+        }
+        
+        else
+        {
+            print("Recoring Failed! Please Try Again.")
         }
     }
+   
     
+    
+    // a utility function for gettting document directory path
     func getDocumentDirectory()->NSURL
     {
-      //  let paths=NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-       let paths=FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+   // let paths=NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+    let paths=FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         
-        let documentDirectory=paths[0] as NSURL
+    let documentDirectory=paths[0] as NSURL
         
-        return documentDirectory
+    return documentDirectory
         
     }
     
@@ -75,6 +83,8 @@ class ViewController: UIViewController,AVAudioRecorderDelegate
         lblRecord.text="Recording..."
         btnStop.isEnabled=true
         btnRecord.isEnabled=false
+        
+        recordAudio()
         
     }
     
@@ -85,12 +95,13 @@ class ViewController: UIViewController,AVAudioRecorderDelegate
         btnStop.isEnabled=false
         lblRecord.text="Tap to Start recording"
         
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        audioRecorder.stop()
+        let audioSession=AVAudioSession.sharedInstance()
+        try! audioSession.setActive(false)
         
     }
     
+
     override func viewWillAppear(_ animated: Bool) {
       
         super.viewWillAppear(animated)
@@ -100,17 +111,17 @@ class ViewController: UIViewController,AVAudioRecorderDelegate
         lblRecord.text="Tap to record"
     }
 
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "PushToPlaySounds")
+        {
+            let recordedAudioUrl = sender as! NSURL
+            let playSoundsViewController=segue.destination as! PlaySoundsViewController
+            playSoundsViewController.recordedAudioURL=recordedAudioUrl
+            
+            
+        }
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-    }
+ 
+
 }
 
