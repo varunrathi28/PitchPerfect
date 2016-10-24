@@ -11,14 +11,14 @@ import AVFoundation
 
 class PlaySoundsViewController: UIViewController {
 
-    @IBOutlet weak var btnSnail:UIButton!
-    @IBOutlet weak var btnChipmunk:UIButton!
-    @IBOutlet weak var btnDarth:UIButton!
-    @IBOutlet weak var btnParrot:UIButton!
-    @IBOutlet weak var btnReverb:UIButton!
-    @IBOutlet weak var btnRabbit:UIButton!
-    
-    @IBOutlet weak var btnStop:UIButton!
+    @IBOutlet weak var snailButton:UIButton!
+    @IBOutlet weak var chipmunkButton:UIButton!
+    @IBOutlet weak var vaderButton:UIButton!
+    @IBOutlet weak var echoButton:UIButton!
+    @IBOutlet weak var reverbButton:UIButton!
+    @IBOutlet weak var rabbitButton:UIButton!
+
+    @IBOutlet weak var stopButton:UIButton! //stopButton
     
     var audioFile:AVAudioFile!
     var audioEngine:AVAudioEngine!
@@ -32,6 +32,7 @@ class PlaySoundsViewController: UIViewController {
     var recordedAudioURL:NSURL!
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupAudio()
         
         // Do any additional setup after loading the view.
     }
@@ -70,9 +71,6 @@ class PlaySoundsViewController: UIViewController {
         case .reverb:
             playSound(reverb:true)
             
-            
-        default:
-            break
         }
         
         configureUI(playState: .Playing)
@@ -80,6 +78,9 @@ class PlaySoundsViewController: UIViewController {
     }
     
     @IBAction func btnStopClicked(_ sender: AnyObject) {
+        
+        print("Stop button pressed")
+        stopAudio()
     }
 
     /*

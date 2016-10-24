@@ -112,8 +112,10 @@ class RecordViewController: UIViewController,AVAudioRecorderDelegate
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if(segue.identifier == "PushToPlaySounds")
+        if(segue.identifier == "PushOptions")
         {
+            
+            
             let recordedAudioUrl = sender as! NSURL
             let playSoundsViewController=segue.destination as! PlaySoundsViewController
             playSoundsViewController.recordedAudioURL=recordedAudioUrl

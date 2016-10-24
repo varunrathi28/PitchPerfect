@@ -37,7 +37,7 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
         print("Audio has been setup")
     }
     
-    func playSound( rate: Float? = nil, pitch: Float? = nil, echo: Bool = false, reverb: Bool = false) {
+    func playSound(rate rate: Float? = nil, pitch: Float? = nil, echo: Bool = false, reverb: Bool = false) {
         
         // initialize audio engine components
         audioEngine = AVAudioEngine()
@@ -94,7 +94,7 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
             }
             
             // schedule a stop timer for when audio finishes playing
-            self.stopTimer = Timer(timeInterval: delayInSeconds, target: self, selector: #selector(PlaySoundsViewController.stopAudio), userInfo: nil, repeats: false)
+            self.stopTimer = Timer(timeInterval: delayInSeconds, target: self, selector:"stopAudio", userInfo: nil, repeats: false)
             RunLoop.main.add(self.stopTimer!, forMode: RunLoopMode.defaultRunLoopMode)
         }
         
@@ -143,21 +143,20 @@ extension PlaySoundsViewController: AVAudioPlayerDelegate {
         switch(playState) {
         case .Playing:
             setPlayButtonsEnabled(enabled: false)
-            btnStop.isEnabled = true
+            stopButton.isEnabled = true
         case .NotPlaying:
             setPlayButtonsEnabled(enabled: true)
-            btnStop.isEnabled = false
+            stopButton.isEnabled = false
         }
     }
     
     func setPlayButtonsEnabled(enabled: Bool) {
-        btnSnail.isEnabled = enabled
-        btnChipmunk.isEnabled = enabled
-        btnRabbit.isEnabled = enabled
-        btnDarth.isEnabled = enabled
-        btnParrot.isEnabled = enabled
-        btnReverb.isEnabled = enabled
-    
+        snailButton.isEnabled = enabled
+        chipmunkButton.isEnabled = enabled
+        rabbitButton.isEnabled = enabled
+        vaderButton.isEnabled = enabled
+        echoButton.isEnabled = enabled
+        reverbButton.isEnabled = enabled
     }
 
     
